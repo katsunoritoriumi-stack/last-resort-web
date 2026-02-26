@@ -2,2459 +2,480 @@
 <html lang="ja">
 
 <head>
+    <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAST RESORT — 馬上精彦 多次元小説</title>
+    <title>Last Resort - 人類最後の聖域</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@200;300;400;500&family=DM+Serif+Display:ital@0;1&family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap"
         rel="stylesheet">
+
     <style>
+        /* =========================================
+            Base Styles & Variables
+        ========================================= */
         :root {
-            --bg: #06070a;
-            --bg1: #0c0d11;
-            --bg2: #10111a;
-            --ink: #e4e0d8;
-            --ink2: #908b84;
-            --ink3: #48453f;
-            --gold: #b8935a;
-            --gold2: #d4b07a;
-            --gold3: rgba(184, 147, 90, 0.1);
-            --navy: #0e1422;
-            --line: rgba(184, 147, 90, 0.16);
-            --line2: rgba(232, 224, 216, 0.07);
+            --bg-color: #050508;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-gold: #c5a059;
+            --font-serif: 'Noto Serif JP', serif;
+            --font-sans: 'Noto Sans JP', sans-serif;
         }
 
-        /* 親要素：はみ出た分を隠す */
-        /* --- ここから書き換え --- */
-        #filmreel {
-            padding: 5rem 0;
-            /* 上下の余白を広げ、左右を0にして画面端まで広げる */
-            width: 100vw;
-            /* 画面の横幅いっぱいに使う */
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            left: 50%;
-            /* 画面中央に配置するためのテクニック */
-            transform: translateX(-50%);
-        }
-
-        .reel-track {
-            display: flex;
-            gap: 20px;
-            /* 画像と画像の間隔をきれいに保つ */
-            width: max-content;
-            padding: 0;
-            animation: scroll-left 40s linear infinite;
-            /* 30sから40sに。少しゆっくり優雅に */
-        }
-
-        /* --- ここまで --- */
-
-        /* 各フレームの微調整 */
-        .reel-frame {
-            flex-shrink: 0;
-            display: inline-block;
-        }
-
-        /* アニメーションの内容：左へ動かす */
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-                /* 2セット用意した場合は-50%にする */
-            }
-        }
-
-        /* マウスホバー時に停止させる（お好みで） */
-        .reel-track:hover {
-            animation-play-state: paused;
-        }
-
-        *,
-        *::before,
-        *::after {
+        * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box
-        }
-
-        html {
-            scroll-behavior: smooth
+            box-sizing: border-box;
         }
 
         body {
-            background: var(--bg);
-            color: var(--ink);
-            font-family: "Noto Serif JP", serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.8;
             overflow-x: hidden;
-            cursor: none
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* cursor */
-        #cur {
-            width: 5px;
-            height: 5px;
-            background: var(--gold2);
-            border-radius: 50%;
-            position: fixed;
-            z-index: 9999;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            mix-blend-mode: screen;
-            transition: width .2s, height .2s
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-serif);
+            font-weight: 400;
         }
 
-        #cur-o {
-            width: 36px;
-            height: 36px;
-            border: 1px solid rgba(184, 147, 90, .3);
-            border-radius: 50%;
-            position: fixed;
-            z-index: 9998;
-            pointer-events: none;
-            transform: translate(-50%, -50%)
+        a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
         }
 
-        body:has(a:hover) #cur {
-            width: 11px;
-            height: 11px
-        }
-
-        #bgcvs {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            opacity: .45
-        }
-
-        /* NAV */
-        nav {
-            position: fixed;
+        /* Navigation */
+        .top-nav {
+            position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            z-index: 800;
-            padding: 1.6rem 5vw;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(180deg, rgba(6, 7, 10, .9) 0%, transparent 100%)
+            width: 100%;
+            padding: 30px 5%;
+            text-align: center;
+            z-index: 100;
         }
 
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: .9rem
+        .site-logo {
+            max-width: 200px;
+            height: auto;
+            opacity: 0.9;
         }
 
-        .nav-logo img {
-            height: 36px;
-            width: 36px;
-            object-fit: contain;
-            opacity: .9
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
         }
 
-        .nav-brand {
-            font-family: "Cormorant", serif;
-            font-size: .7rem;
-            letter-spacing: .4em;
-            text-transform: uppercase;
-            color: var(--gold)
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.2rem;
-            list-style: none
-        }
-
-        .nav-links a {
-            font-family: "Cormorant", serif;
-            font-size: .68rem;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: var(--ink3);
-            text-decoration: none;
-            transition: color .4s
-        }
-
-        .nav-links a:hover {
-            color: var(--gold2)
-        }
-
-        /* HERO */
-        #hero {
+        section {
+            padding: 100px 0;
             position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            overflow: hidden
         }
 
-        .hero-bg {
-            position: absolute;
-            inset: 0;
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: linear-gradient(rgba(5, 5, 8, 0.7), rgba(5, 5, 8, 0.7)), url('111.jpg');
             background-size: cover;
             background-position: center;
-            filter: brightness(.27) saturate(.8);
-            transform: scale(1.04);
-            animation: heroZoom 22s linear infinite alternate
+            background-attachment: fixed;
+            position: relative;
         }
 
-        @keyframes heroZoom {
-            to {
-                transform: scale(1.0)
-            }
+        .hero h1 {
+            font-size: 3.5rem;
+            letter-spacing: 0.2em;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(197, 160, 89, 0.5);
         }
 
-        .hero-vignette {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 28%, rgba(6, 7, 10, .88) 100%)
+        /* Video Area */
+        .video-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 60px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            padding-top: 56.25%;
+            /* 16:9 */
+            background: #000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .hero-top-rule {
+        .video-container iframe {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(184, 147, 90, .4), transparent);
-            transform: scaleX(0);
-            animation: ruleIn 2s 1s forwards
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
-        .hero-bot-rule {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(184, 147, 90, .2), transparent);
-            transform: scaleX(0);
-            animation: ruleIn 2s 1.4s forwards
-        }
-
-        @keyframes ruleIn {
-            to {
-                transform: scaleX(1)
-            }
-        }
-
-        .hero-center {
-            position: relative;
-            z-index: 2;
+        .section-title {
             text-align: center;
-            padding: 0 5vw
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
         }
 
-        .hero-logo {
-            width: min(130px, 20vw);
-            margin: 0 auto 2.5rem;
-            opacity: 0;
-            animation: fadeBlur 2s .4s forwards
+        .section-desc {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px auto;
         }
 
-        @keyframes fadeBlur {
-            from {
-                opacity: 0;
-                filter: blur(14px)
-            }
-
-            to {
-                opacity: 1;
-                filter: blur(0)
-            }
+        .graphic-wrapper {
+            width: 100%;
+            margin: 40px 0;
+            text-align: center;
         }
 
-        .hero-pre {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: clamp(.58rem, .9vw, .74rem);
-            letter-spacing: .55em;
-            text-transform: uppercase;
-            color: var(--gold);
-            opacity: 0;
-            animation: fadeUp 1.5s .9s forwards;
-            margin-bottom: 2.2rem;
-            display: block
+        .graphic-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .hero-tc {
-            overflow: hidden;
-            margin-bottom: .3rem
+        /* Grid */
+        .journey-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
         }
 
-        .hero-en {
-            font-family: "DM Serif Display", serif;
-            font-size: clamp(4.5rem, 11vw, 10.5rem);
-            font-weight: 400;
-            line-height: .88;
-            letter-spacing: -.03em;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(228, 224, 216, .22);
-            display: block;
-            transform: translateY(110%);
-            animation: slideUp 2s .7s cubic-bezier(.16, 1, .3, 1) forwards
+        .journey-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
-        @keyframes slideUp {
-            to {
-                transform: translateY(0)
-            }
+        .journey-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-gold);
         }
 
-        .hero-tc2 {
-            overflow: hidden
+        .journey-card h3 {
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+            display: inline-block;
         }
 
-        .hero-jp {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(1.1rem, 2.2vw, 1.8rem);
-            font-weight: 300;
-            letter-spacing: .7em;
-            color: var(--gold2);
-            display: block;
-            transform: translateY(120%);
-            animation: slideUp 1.8s 1s cubic-bezier(.16, 1, .3, 1) forwards;
-            margin-top: .5rem;
-            margin-bottom: 2.8rem
-        }
-
-        .hero-tagline {
-            font-size: clamp(.8rem, 1vw, .9rem);
-            line-height: 2.2;
-            color: var(--ink2);
-            max-width: 500px;
-            margin: 0 auto 3rem;
-            font-weight: 300;
-            opacity: 0;
-            animation: fadeUp 1.8s 1.5s forwards;
-            letter-spacing: .04em
-        }
-
-        .hero-cta-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-            opacity: 0;
-            animation: fadeUp 1.8s 1.9s forwards;
-            flex-wrap: wrap
-        }
-
-        .hero-btn {
-            padding: 1rem 2.8rem;
-            border: 1px solid var(--gold);
-            font-family: "Shippori Mincho B1", serif;
-            font-size: .88rem;
-            letter-spacing: .2em;
-            color: var(--gold2);
-            text-decoration: none;
+        /* Slider */
+        .slider-container {
             position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            aspect-ratio: 16 / 9;
+            border-radius: 8px;
             overflow: hidden;
-            transition: color .4s
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .hero-btn::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: var(--gold);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .5s cubic-bezier(.4, 0, .2, 1)
-        }
-
-        .hero-btn:hover::before {
-            transform: scaleX(1)
-        }
-
-        .hero-btn:hover {
-            color: var(--bg)
-        }
-
-        .hero-btn span {
+        .slider {
+            width: 100%;
+            height: 100%;
             position: relative;
-            z-index: 1
         }
 
-        .hero-sub-link {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .7rem;
-            letter-spacing: .3em;
-            color: var(--ink3);
-            text-decoration: none;
-            transition: color .3s
-        }
-
-        .hero-sub-link:hover {
-            color: var(--gold)
-        }
-
-        .hero-scroll {
+        .slide {
             position: absolute;
-            bottom: 2.5rem;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 20px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            font-size: 1.5rem;
+        }
+
+        .prev-btn {
+            left: 20px;
+        }
+
+        .next-btn {
+            right: 20px;
+        }
+
+        .slider-indicators {
+            position: absolute;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: .6rem;
-            opacity: 0;
-            animation: fadeUp 2s 2.3s forwards
+            gap: 10px;
+            z-index: 10;
         }
 
-        .hero-scroll-bar {
-            width: 1px;
-            height: 50px;
-            background: linear-gradient(180deg, var(--gold), transparent);
-            animation: sPulse 2s 3s infinite
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
         }
 
-        @keyframes sPulse {
-
-            0%,
-            100% {
-                opacity: .4;
-                transform: scaleY(1)
-            }
-
-            50% {
-                opacity: 1;
-                transform: scaleY(.5)
-            }
+        .indicator.active {
+            background: var(--accent-gold);
         }
 
-        .hero-scroll span {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .58rem;
-            letter-spacing: .4em;
-            color: var(--ink3);
-            text-transform: uppercase
+        /* =========================================
+            Link Buttons (復元箇所)
+        ========================================= */
+        .epilogue {
+            text-align: center;
+            padding: 120px 0;
         }
 
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(18px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        /* SCENE STRIP */
-        .scene-strip {
-            position: relative;
-            z-index: 1;
-            height: 65vh;
-            overflow: hidden
-        }
-
-        .scene-strip img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            filter: brightness(.38) saturate(.75)
-        }
-
-        .strip-ov {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(6, 7, 10, .7) 0%, transparent 30%, transparent 70%, rgba(6, 7, 10, .7) 100%)
-        }
-
-        .strip-cap {
-            position: absolute;
-            bottom: 3rem;
-            left: 5vw;
-            right: 5vw
-        }
-
-        .strip-cap .cap-lbl {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .62rem;
-            letter-spacing: .45em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: .7rem;
-            display: block
-        }
-
-        .strip-cap .cap-txt {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(.95rem, 2vw, 1.45rem);
-            font-weight: 300;
-            color: var(--ink);
-            line-height: 1.65;
-            letter-spacing: .04em;
-            max-width: 560px
-        }
-
-        /* SECTION */
-        .sec {
-            position: relative;
-            z-index: 1;
-            padding: 9rem 5vw
-        }
-
-        .sec::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 5vw;
-            right: 5vw;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--line), transparent)
-        }
-
-        .sec-dark {
-            background: var(--bg1)
-        }
-
-        .sec-navy {
-            background: var(--navy)
-        }
-
-        .eyebrow {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .64rem;
-            letter-spacing: .5em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 1.5rem;
-            display: block
-        }
-
-        .sec-h2 {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(1.7rem, 3.2vw, 2.8rem);
-            font-weight: 300;
-            line-height: 1.7;
-            color: var(--ink);
-            letter-spacing: .04em;
-            margin-bottom: 2.5rem
-        }
-
-        .sec-h2 em {
-            color: var(--gold2);
-            font-style: normal
-        }
-
-        .sec-p {
-            font-size: clamp(.85rem, 1.05vw, .95rem);
-            line-height: 2.4;
-            color: var(--ink2);
-            font-weight: 300;
-            margin-bottom: 1.5rem;
-            letter-spacing: .03em
-        }
-
-        .pull {
-            border-left: 1px solid var(--gold);
-            padding: 1.5rem 2rem;
-            margin: 2rem 0;
-            background: var(--gold3)
-        }
-
-        .pull p {
-            font-family: "DM Serif Display", serif;
-            font-style: italic;
-            font-size: clamp(.92rem, 1.4vw, 1.18rem);
-            color: var(--gold2);
-            line-height: 1.85
-        }
-
-        /* PROJECT */
-        .proj-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.65fr;
-            gap: 7rem;
-            max-width: 1200px;
-            align-items: start
-        }
-
-        .proj-aside {
-            position: sticky;
-            top: 30vh
-        }
-
-        .proj-num {
-            font-family: "DM Serif Display", serif;
-            font-size: 8rem;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(184, 147, 90, .07);
-            line-height: 1;
-            margin-bottom: .4rem
-        }
-
-        .proj-jp {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: .95rem;
-            font-weight: 400;
-            letter-spacing: .12em;
-            color: var(--ink3);
-            writing-mode: vertical-rl;
-            line-height: 2.2;
-            margin-top: .8rem
-        }
-
-        .stl {
+        .link-container {
             display: flex;
             flex-direction: column;
-            gap: 0;
-            margin-top: 3rem
+            gap: 20px;
+            align-items: center;
+            margin-top: 50px;
         }
 
-        .stl-item {
-            display: grid;
-            grid-template-columns: 44px 1fr;
-            gap: 1.8rem;
-            padding: 2.5rem 0;
-            border-bottom: 1px solid var(--line2);
-            align-items: start
-        }
-
-        .stl-item:last-child {
-            border-bottom: none
-        }
-
-        .stl-step {
-            font-family: "DM Serif Display", serif;
-            font-size: 2.2rem;
-            color: var(--gold);
-            line-height: 1
-        }
-
-        .stl-title {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--ink);
-            letter-spacing: .05em;
-            margin-bottom: .55rem
-        }
-
-        .stl-text {
-            font-size: .85rem;
-            line-height: 2.1;
-            color: var(--ink2);
-            font-weight: 300
-        }
-
-        .stl-text em {
-            color: var(--gold2);
-            font-style: normal
-        }
-
-        /* FILM REEL */
-        #filmreel {
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 40px;
+            background: transparent;
+            color: #fff;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            border: 1px solid var(--accent-gold);
+            border-radius: 4px;
+            min-width: 320px;
             position: relative;
+            overflow: hidden;
             z-index: 1;
-            padding: 5rem 0;
-            background: var(--bg1);
-            overflow: hidden
+            transition: color 0.4s;
         }
 
-        #filmreel::before {
-            content: "";
+        .action-link::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--line), transparent)
-        }
-
-        .reel-lbl {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .62rem;
-            letter-spacing: .5em;
-            text-transform: uppercase;
-            color: var(--gold);
-            padding: 0 5vw;
-            margin-bottom: 1.8rem;
-            display: block
-        }
-
-        .reel-track {
-            display: flex;
-            gap: 1rem;
-            padding: 0 5vw;
-            overflow-x: auto;
-            scrollbar-width: none;
-            cursor: grab;
-            -webkit-overflow-scrolling: touch
-        }
-
-        .reel-track::-webkit-scrollbar {
-            display: none
-        }
-
-        .reel-frame {
-            flex: 0 0 min(360px, 78vw);
-            height: 210px;
-            overflow: hidden;
-            position: relative
-        }
-
-        .reel-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            filter: brightness(.5) saturate(.65);
-            transition: filter .5s, transform .6s
-        }
-
-        .reel-frame:hover img {
-            filter: brightness(.72) saturate(.88);
-            transform: scale(1.03)
-        }
-
-        .reel-cap {
-            position: absolute;
-            bottom: .7rem;
-            left: .9rem;
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .6rem;
-            letter-spacing: .28em;
-            color: rgba(184, 147, 90, .65);
-            text-transform: uppercase
-        }
-
-        /* ★ ANIM 1 — ink poem */
-        #inkpoem {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg);
-            overflow: hidden
-        }
-
-        .ink-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            filter: brightness(.12) saturate(.5)
-        }
-
-        .enso-svg {
-            width: min(430px, 74vw);
-            height: min(430px, 74vw);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -54%);
-            pointer-events: none
-        }
-
-        .enso-c {
-            fill: none;
-            stroke: rgba(184, 147, 90, .16);
-            stroke-width: .8;
-            stroke-dasharray: 1520;
-            stroke-dashoffset: 1520;
-            transition: stroke-dashoffset 3s cubic-bezier(.4, 0, .2, 1)
-        }
-
-        .enso-c.drawn {
-            stroke-dashoffset: 0
-        }
-
-        .poem-wrap {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 5vw
-        }
-
-        .poem-lines {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-            padding: 3.5rem 2rem
-        }
-
-        .poem-l {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(1.05rem, 2.2vw, 1.8rem);
-            font-weight: 300;
-            letter-spacing: .18em;
-            color: var(--ink);
-            opacity: 0;
-            filter: blur(16px);
-            transform: scale(1.04);
-            transition: opacity 1.8s cubic-bezier(.4, 0, .2, 1), filter 1.8s, transform 1.8s;
-            line-height: 1.75
-        }
-
-        .poem-l.gld {
-            color: var(--gold2)
-        }
-
-        .poem-l.en {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: clamp(.75rem, 1.2vw, .97rem);
-            letter-spacing: .28em;
-            color: var(--gold);
-            margin-top: 1rem
-        }
-
-        .poem-l.show {
-            opacity: 1;
-            filter: blur(0);
-            transform: scale(1)
-        }
-
-        /* SUB STORIES */
-        #substories {
-            background: var(--bg2)
-        }
-
-        .sub-intro {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 5.5rem
-        }
-
-        .sub-intro p {
-            font-size: clamp(.86rem, 1.05vw, .94rem);
-            line-height: 2.3;
-            color: var(--ink2);
-            font-weight: 300
-        }
-
-        .live-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .55rem;
-            padding: .3rem 1rem;
-            border: 1px solid rgba(184, 147, 90, .4);
-            font-family: "Cormorant", serif;
-            font-size: .62rem;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: var(--gold2);
-            margin-bottom: 1.5rem
-        }
-
-        .ldot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--gold2);
-            animation: lp 2s infinite
-        }
-
-        @keyframes lp {
-
-            0%,
-            100% {
-                opacity: 1
-            }
-
-            50% {
-                opacity: .3
-            }
-        }
-
-        .sub-dual {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            border: 1px solid var(--line2)
-        }
-
-        .sub-card {
-            position: relative;
-            overflow: hidden;
-            min-height: 580px
-        }
-
-        .sub-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            filter: brightness(.2) saturate(.55);
-            transition: filter 1s
-        }
-
-        .sub-card:hover .sub-bg {
-            filter: brightness(.3) saturate(.72)
-        }
-
-        .sub-gl {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(139, 26, 46, .2) 0%, transparent 60%)
-        }
-
-        .sub-gr {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(14, 20, 34, .4) 0%, transparent 60%)
-        }
-
-        .sub-cnt {
-            position: relative;
-            z-index: 2;
-            padding: 3.5rem 3rem;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            border-right: 1px solid var(--line2)
-        }
-
-        .sub-card:last-child .sub-cnt {
-            border-right: none
-        }
-
-        .sub-badge {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .6rem;
-            letter-spacing: .4em;
-            text-transform: uppercase;
-            margin-bottom: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: .55rem
-        }
-
-        .sub-card:nth-child(1) .sub-badge {
-            color: rgba(196, 34, 64, .8)
-        }
-
-        .sub-card:nth-child(2) .sub-badge {
-            color: var(--gold)
-        }
-
-        .sub-bdot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            flex-shrink: 0
-        }
-
-        .sub-card:nth-child(1) .sub-bdot {
-            background: rgba(196, 34, 64, .8)
-        }
-
-        .sub-card:nth-child(2) .sub-bdot {
-            background: var(--gold)
-        }
-
-        .sub-num {
-            font-family: "DM Serif Display", serif;
-            font-size: min(13vw, 8.5rem);
-            color: transparent;
-            line-height: .85;
-            margin-bottom: 1.2rem;
-            letter-spacing: -.04em;
-            display: block
-        }
-
-        .sub-card:nth-child(1) .sub-num {
-            -webkit-text-stroke: 1px rgba(196, 34, 64, .18)
-        }
-
-        .sub-card:nth-child(2) .sub-num {
-            -webkit-text-stroke: 1px rgba(184, 147, 90, .16)
-        }
-
-        .sub-title {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(1.1rem, 2vw, 1.65rem);
-            font-weight: 500;
-            letter-spacing: .06em;
-            line-height: 1.45;
-            margin-bottom: .45rem
-        }
-
-        .sub-card:nth-child(1) .sub-title {
-            color: rgba(228, 200, 200, .9)
-        }
-
-        .sub-card:nth-child(2) .sub-title {
-            color: var(--gold2)
-        }
-
-        .sub-en {
-            font-family: "DM Serif Display", serif;
-            font-style: italic;
-            font-size: clamp(.78rem, 1.1vw, .98rem);
-            color: var(--ink3);
-            margin-bottom: 1.5rem
-        }
-
-        .sub-body {
-            font-size: clamp(.79rem, .93vw, .87rem);
-            line-height: 2.1;
-            color: var(--ink2);
-            font-weight: 300;
-            max-width: 340px;
-            margin-bottom: 1.8rem;
-            opacity: .8
-        }
-
-        .sub-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .38rem;
-            margin-bottom: 1.8rem
-        }
-
-        .sub-tag {
-            padding: .22rem .72rem;
-            border: 1px solid;
-            font-family: "Cormorant", serif;
-            font-size: .58rem;
-            letter-spacing: .15em;
-            text-transform: uppercase;
-            transition: all .3s
-        }
-
-        .sub-card:nth-child(1) .sub-tag {
-            border-color: rgba(196, 34, 64, .2);
-            color: rgba(196, 34, 64, .6)
-        }
-
-        .sub-card:nth-child(2) .sub-tag {
-            border-color: rgba(184, 147, 90, .2);
-            color: var(--gold)
-        }
-
-        .sub-card:nth-child(1) .sub-tag:hover {
-            border-color: rgba(196, 34, 64, .7);
-            color: rgba(220, 80, 100, 1)
-        }
-
-        .sub-card:nth-child(2) .sub-tag:hover {
-            border-color: var(--gold2);
-            color: var(--gold2)
-        }
-
-        .sub-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: .65rem;
-            font-family: "Cormorant", serif;
-            font-size: .66rem;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            text-decoration: none;
-            padding: .72rem 1.5rem;
-            border: 1px solid;
-            position: relative;
-            overflow: hidden;
-            transition: color .4s
-        }
-
-        .sub-card:nth-child(1) .sub-cta {
-            border-color: rgba(196, 34, 64, .35);
-            color: rgba(196, 34, 64, .8)
-        }
-
-        .sub-card:nth-child(2) .sub-cta {
-            border-color: rgba(184, 147, 90, .35);
-            color: var(--gold)
-        }
-
-        .sub-cta::before {
-            content: "";
-            position: absolute;
-            inset: 0;
+            bottom: 0;
+            background: var(--accent-gold);
+            z-index: -1;
             transform: scaleX(0);
             transform-origin: left;
-            transition: transform .4s cubic-bezier(.4, 0, .2, 1)
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        .sub-card:nth-child(1) .sub-cta::before {
-            background: rgba(196, 34, 64, .85)
+        .action-link:hover::before {
+            transform: scaleX(1);
         }
 
-        .sub-card:nth-child(2) .sub-cta::before {
-            background: var(--gold)
+        .action-link:hover {
+            color: #000;
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
         }
 
-        .sub-cta:hover::before {
-            transform: scaleX(1)
-        }
-
-        .sub-cta:hover {
-            color: var(--bg)
-        }
-
-        .sub-cta span {
-            position: relative;
-            z-index: 1
-        }
-
-        /* ★ ANIM 2 — water divide */
-        #waterdivide {
-            position: relative;
-            z-index: 1;
-            height: 60vh;
-            overflow: hidden;
-            background: var(--bg)
-        }
-
-        .wd-img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(.18) saturate(.5)
-        }
-
-        .wd-ov {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%)
-        }
-
-        #rippleCvs {
-            position: absolute;
-            inset: 0;
-            opacity: .55
-        }
-
-        .wd-ctr {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .footer {
             text-align: center;
-            z-index: 2;
-            width: 90vw
-        }
-
-        .wd-txt {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(.95rem, 2vw, 1.6rem);
-            font-weight: 300;
-            letter-spacing: .12em;
-            color: var(--ink);
-            line-height: 1.9;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1.2s, transform 1.2s
-        }
-
-        .wd-txt.show {
-            opacity: 1;
-            transform: translateY(0)
-        }
-
-        .wd-sub {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: clamp(.65rem, .95vw, .8rem);
-            letter-spacing: .4em;
-            color: var(--gold);
-            margin-top: .9rem;
-            display: block;
-            opacity: 0;
-            transform: translateY(14px);
-            transition: opacity 1.2s .35s, transform 1.2s .35s
-        }
-
-        .wd-sub.show {
-            opacity: 1;
-            transform: translateY(0)
-        }
-
-        /* MAIN STORY COMING */
-        #mainstory {
-            background: var(--navy);
-            padding: 0
-        }
-
-        .ms-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 100vh;
-            align-items: stretch
-        }
-
-        .ms-vis {
-            position: relative;
-            overflow: hidden
-        }
-
-        .ms-vis img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            filter: brightness(.25) saturate(.55)
-        }
-
-        .ms-vis-ov {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(270deg, var(--navy) 0%, transparent 55%)
-        }
-
-        .ms-cnt {
-            padding: 8rem 5vw 8rem 4vw;
-            display: flex;
-            flex-direction: column;
-            justify-content: center
-        }
-
-        .ms-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .65rem;
-            padding: .32rem 1rem;
-            border: 1px solid rgba(184, 147, 90, .28);
-            font-family: "Cormorant", serif;
-            font-size: .6rem;
-            letter-spacing: .4em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 2rem
-        }
-
-        .ms-bdot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--gold);
-            animation: lp 3s infinite
-        }
-
-        .ms-num {
-            font-family: "DM Serif Display", serif;
-            font-size: 9rem;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(184, 147, 90, .09);
-            line-height: 1;
-            margin-bottom: .9rem
-        }
-
-        .ms-title {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(1.5rem, 2.8vw, 2.5rem);
-            font-weight: 400;
-            color: var(--ink);
-            line-height: 1.55;
-            letter-spacing: .04em;
-            margin-bottom: .45rem
-        }
-
-        .ms-en {
-            font-family: "DM Serif Display", serif;
-            font-style: italic;
-            font-size: clamp(.82rem, 1.2vw, 1.05rem);
-            color: var(--ink3);
-            margin-bottom: 2.5rem;
-            display: block
-        }
-
-        .ms-p {
-            font-size: clamp(.83rem, 1vw, .92rem);
-            line-height: 2.3;
-            color: var(--ink2);
-            font-weight: 300;
-            margin-bottom: 1.1rem
-        }
-
-        .ms-teaser {
-            margin-top: 2.5rem;
-            padding: 1.7rem 2.1rem;
-            border-left: 1px solid var(--gold);
-            background: var(--gold3)
-        }
-
-        .ms-teaser p {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(.88rem, 1.15vw, 1.03rem);
-            line-height: 1.95;
-            color: var(--gold2)
-        }
-
-        .ms-lock {
-            margin-top: 2.5rem;
-            display: inline-flex;
-            align-items: center;
-            gap: .8rem;
-            font-family: "Cormorant", serif;
-            font-size: .68rem;
-            letter-spacing: .28em;
-            text-transform: uppercase;
-            color: var(--ink3)
-        }
-
-        /* PHILOSOPHY */
-        .ph-hdr {
-            text-align: center;
-            margin-bottom: 5.5rem
-        }
-
-        .ph-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0;
-            border: 1px solid var(--line2);
-            max-width: 1100px;
-            margin: 0 auto
-        }
-
-        .ph-card {
-            padding: 3.5rem 2.4rem;
-            border-right: 1px solid var(--line2);
-            position: relative;
-            overflow: hidden;
-            transition: background .5s
-        }
-
-        .ph-card:last-child {
-            border-right: none
-        }
-
-        .ph-card:hover {
-            background: rgba(184, 147, 90, .022)
-        }
-
-        .ph-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: var(--gold);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .6s
-        }
-
-        .ph-card:hover::before {
-            transform: scaleX(1)
-        }
-
-        .ph-n {
-            font-family: "DM Serif Display", serif;
-            font-size: 5rem;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(184, 147, 90, .09);
-            line-height: 1;
-            margin-bottom: 1.4rem;
-            display: block
-        }
-
-        .ph-jp {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: 1.12rem;
-            font-weight: 500;
-            color: var(--gold2);
-            margin-bottom: .3rem;
-            letter-spacing: .08em
-        }
-
-        .ph-en {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .66rem;
-            letter-spacing: .25em;
-            text-transform: uppercase;
-            color: var(--ink3);
-            margin-bottom: 1.8rem;
-            display: block
-        }
-
-        .ph-txt {
-            font-size: .85rem;
-            line-height: 2.2;
-            color: var(--ink2);
-            font-weight: 300
-        }
-
-        .ph-q {
-            margin-top: 1.8rem;
-            padding-top: 1.4rem;
-            border-top: 1px solid var(--line2);
-            font-family: "Shippori Mincho B1", serif;
-            font-size: .81rem;
-            line-height: 1.95;
-            color: rgba(184, 147, 90, .52);
-            font-style: italic
-        }
-
-        /* ★ ANIM 3 — star counter */
-        #starcounter {
-            position: relative;
-            z-index: 1;
-            padding: 8rem 5vw;
-            background: var(--bg);
-            overflow: hidden
-        }
-
-        #starcounter::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 5vw;
-            right: 5vw;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--line), transparent)
-        }
-
-        #pCvs {
-            position: absolute;
-            inset: 0;
-            pointer-events: none
-        }
-
-        .sc-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            border: 1px solid var(--line2);
-            max-width: 1100px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1
-        }
-
-        .sc-item {
-            padding: 4rem 2.2rem;
-            border-right: 1px solid var(--line2);
-            text-align: center
-        }
-
-        .sc-item:last-child {
-            border-right: none
-        }
-
-        .sc-n {
-            font-family: "DM Serif Display", serif;
-            font-size: clamp(2.4rem, 4.5vw, 4.3rem);
-            color: var(--gold2);
-            line-height: 1;
-            margin-bottom: .65rem;
-            display: block;
-            opacity: 0;
-            transform: translateY(14px);
-            transition: opacity .9s, transform .9s
-        }
-
-        .sc-item.counted .sc-n {
-            opacity: 1;
-            transform: translateY(0)
-        }
-
-        .sc-lbl {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .63rem;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: var(--ink3);
-            margin-bottom: .65rem;
-            display: block
-        }
-
-        .sc-desc {
-            font-size: .79rem;
-            line-height: 1.9;
-            color: var(--ink2)
-        }
-
-        /* AUTHOR */
-        .au-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8rem;
-            max-width: 1200px;
-            align-items: center
-        }
-
-        .au-name {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(2.8rem, 5.5vw, 5rem);
-            font-weight: 300;
-            letter-spacing: .04em;
-            line-height: 1;
-            color: var(--ink);
-            margin-bottom: .4rem
-        }
-
-        .au-en {
-            font-family: "DM Serif Display", serif;
-            font-style: italic;
-            font-size: clamp(.86rem, 1.3vw, 1.12rem);
-            color: var(--ink3);
-            margin-bottom: 2.1rem;
-            display: block
-        }
-
-        .au-roles {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .42rem;
-            margin-bottom: 2.7rem
-        }
-
-        .au-role {
-            padding: .27rem .88rem;
-            border: 1px solid var(--line);
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .63rem;
-            letter-spacing: .15em;
-            color: var(--gold)
-        }
-
-        .au-p {
-            font-size: clamp(.83rem, 1vw, .92rem);
-            line-height: 2.3;
-            color: var(--ink2);
-            font-weight: 300;
-            margin-bottom: 1.1rem
-        }
-
-        .au-stmt {
-            margin-top: 2.5rem;
-            padding: 1.8rem 2.2rem;
-            border-left: 1px solid var(--gold);
-            background: var(--gold3)
-        }
-
-        .au-stmt p {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(.88rem, 1.15vw, 1.03rem);
-            line-height: 1.95;
-            color: var(--gold2)
-        }
-
-        .au-tl {
-            display: flex;
-            flex-direction: column
-        }
-
-        .au-tl-i {
-            display: grid;
-            grid-template-columns: 58px 1fr;
-            gap: 1.3rem;
-            padding: 1.7rem 0;
-            border-bottom: 1px solid var(--line2)
-        }
-
-        .au-tl-i:last-child {
-            border-bottom: none
-        }
-
-        .au-yr {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .74rem;
-            letter-spacing: .12em;
-            color: var(--gold);
-            padding-top: .14rem
-        }
-
-        .au-tl-txt {
-            font-size: .82rem;
-            line-height: 2;
-            color: var(--ink2);
-            font-weight: 300
-        }
-
-        /* PORTAL */
-        #portal {
-            position: relative;
-            z-index: 1;
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background: var(--bg)
-        }
-
-        #portal::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 5vw;
-            right: 5vw;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--line), transparent)
-        }
-
-        .portal-bg {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(.11) saturate(.45)
-        }
-
-        .portal-ov {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse 72% 72% at 50% 50%, transparent 18%, rgba(6, 7, 10, .92) 100%)
-        }
-
-        .portal-cnt {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 660px;
-            padding: 5vw
-        }
-
-        .portal-logo {
-            width: min(85px, 14vw);
-            margin: 0 auto 2.4rem;
-            opacity: .8
-        }
-
-        .portal-h2 {
-            font-family: "Shippori Mincho B1", serif;
-            font-size: clamp(1.8rem, 3.5vw, 2.9rem);
-            font-weight: 300;
-            line-height: 1.7;
-            color: var(--ink);
-            margin-bottom: 1.4rem;
-            letter-spacing: .04em
-        }
-
-        .portal-h2 span {
-            color: var(--gold2)
-        }
-
-        .portal-p {
-            font-size: clamp(.83rem, 1vw, .92rem);
-            line-height: 2.3;
-            color: var(--ink2);
-            font-weight: 300;
-            margin-bottom: 3.3rem
-        }
-
-        .portal-btn {
-            display: inline-block;
-            padding: 1.1rem 3.5rem;
-            border: 1px solid var(--gold);
-            font-family: "Shippori Mincho B1", serif;
-            font-size: .9rem;
-            letter-spacing: .22em;
-            color: var(--gold2);
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            transition: color .4s
-        }
-
-        .portal-btn::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: var(--gold2);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .5s cubic-bezier(.4, 0, .2, 1)
-        }
-
-        .portal-btn:hover::before {
-            transform: scaleX(1)
-        }
-
-        .portal-btn:hover {
-            color: var(--bg)
-        }
-
-        .portal-btn span {
-            position: relative;
-            z-index: 1
-        }
-
-        .portal-url {
-            margin-top: 1.1rem;
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .6rem;
-            letter-spacing: .35em;
-            color: var(--ink3);
-            display: block
-        }
-
-        /* FOOTER */
-        footer {
-            position: relative;
-            z-index: 1;
-            padding: 4rem 5vw 3rem;
-            background: var(--bg);
-            border-top: 1px solid var(--line2)
-        }
-
-        .ft {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-bottom: 2.5rem
-        }
-
-        .ft-title {
-            font-family: "DM Serif Display", serif;
-            font-style: italic;
-            font-size: 1.4rem;
-            color: var(--gold)
-        }
-
-        .ft-by {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .63rem;
-            letter-spacing: .3em;
-            color: var(--ink3);
-            margin-top: .3rem
-        }
-
-        .ft-r a {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .66rem;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: var(--ink3);
-            text-decoration: none;
-            transition: color .3s;
-            display: block;
-            margin-bottom: .38rem
-        }
-
-        .ft-r a:hover {
-            color: var(--gold2)
-        }
-
-        .ft-copy {
-            padding-top: 2rem;
-            border-top: 1px solid var(--line2);
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: .5rem
-        }
-
-        .ft-copy span {
-            font-family: "Cormorant", serif;
-            font-style: italic;
-            font-size: .6rem;
-            letter-spacing: .2em;
-            color: var(--ink3)
-        }
-
-        /* REVEAL */
-        .rv {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s cubic-bezier(.4, 0, .2, 1), transform 1s cubic-bezier(.4, 0, .2, 1)
-        }
-
-        .rv-l {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: opacity 1s cubic-bezier(.4, 0, .2, 1), transform 1s cubic-bezier(.4, 0, .2, 1)
-        }
-
-        .rv-r {
-            opacity: 0;
-            transform: translateX(30px);
-            transition: opacity 1s cubic-bezier(.4, 0, .2, 1), transform 1s cubic-bezier(.4, 0, .2, 1)
-        }
-
-        .rv.on,
-        .rv-l.on,
-        .rv-r.on {
-            opacity: 1;
-            transform: translate(0)
-        }
-
-        @media(max-width:900px) {
-
-            .proj-grid,
-            .ms-grid,
-            .au-grid {
-                grid-template-columns: 1fr
-            }
-
-            .ms-vis {
-                height: 42vh
-            }
-
-            .sub-dual {
-                grid-template-columns: 1fr
-            }
-
-            .sub-cnt {
-                border-right: none !important;
-                border-bottom: 1px solid var(--line2)
-            }
-
-            .ph-grid {
-                grid-template-columns: 1fr
-            }
-
-            .ph-card {
-                border-right: none;
-                border-bottom: 1px solid var(--line2)
-            }
-
-            .sc-grid {
-                grid-template-columns: 1fr 1fr
-            }
-
-            .nav-links {
-                display: none
-            }
-
-            .hero-cta-row {
-                flex-direction: column;
-                gap: 1.2rem
-            }
-        }
-
-        @media(max-width:600px) {
-            .sc-grid {
-                grid-template-columns: 1fr
-            }
-        }
-
-        /* 波形アイコンの全体のスタイル */
-        .wave-icon {
-            display: inline-flex;
-            align-items: flex-end;
-            gap: 2px;
-            width: 14px;
-            height: 12px;
-            margin-right: 8px;
-        }
-
-        /* 4本の棒の共通スタイル */
-        .wave-icon span {
-            width: 2px;
-            background-color: var(--gold2);
-            /* バッジの色に合わせる */
-            border-radius: 1px;
-            animation: wave-anim 0.8s ease-in-out infinite;
-        }
-
-        /* 棒ごとの高さとアニメーションの遅延を変えて、ランダムな動きを出す */
-        .wave-icon span:nth-child(1) {
-            height: 40%;
-            animation-delay: 0.0s;
-        }
-
-        .wave-icon span:nth-child(2) {
-            height: 100%;
-            animation-delay: 0.2s;
-        }
-
-        .wave-icon span:nth-child(3) {
-            height: 60%;
-            animation-delay: 0.1s;
-        }
-
-        .wave-icon span:nth-child(4) {
-            height: 80%;
-            animation-delay: 0.3s;
-        }
-
-        /* 波が上下に動くアニメーション */
-        @keyframes wave-anim {
-
-            0%,
-            100% {
-                transform: scaleY(1);
-            }
-
-            50% {
-                transform: scaleY(0.4);
-            }
-        }
-
-        /* 既存の丸ドット（ldot/ms-bdot）は不要になるので、非表示にするか削除してもOKです */
-        .ldot,
-        .ms-bdot {
-            display: none;
-        }
-
-        /* 縦書きフレーズの基本スタイル */
-        .vertical-phrase {
-            position: absolute;
-            right: 3vw;
-            top: 5rem;
-            writing-mode: vertical-rl;
-            font-family: "Shippori Mincho B1", serif;
-            /* --- 修正ポイント --- */
-            font-size: 2rem;
-            /* 1.2remから2remへ大きく */
-            font-weight: 600;
-            /* 太くする */
-            letter-spacing: 0.6em;
-            /* 字間をもっと広げて優雅に */
-            color: var(--gold2);
-            /* 色をはっきりした金へ */
-            opacity: 0.8;
-            /* 透明度を下げてくっきりさせる */
-            /* ------------------ */
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        .vertical-phrase span {
-            display: block;
-            background: linear-gradient(to bottom, transparent, rgba(184, 147, 90, 0.05), transparent);
-            padding: 20px 5px;
-            border-right: 1px solid rgba(184, 147, 90, 0.2);
-            /* 右側に繊細な線を一本入れる */
-        }
-
-        /* 墨が滲み出るようなフェードイン（revealとの組み合わせ） */
-        .vertical-phrase.rv {
-            transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1), transform 2.5s;
-        }
-
-        .vertical-phrase.rv.on {
-            opacity: 0.6;
-            transform: translateY(-20px);
-            /* 少し上に浮き上がる動き */
-        }
-
-        /* モバイル端末では重なってしまう可能性があるため非表示にする */
-        @media (max-width: 900px) {
-            .vertical-phrase {
-                display: none;
-            }
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.8rem;
         }
     </style>
 </head>
 
 <body>
-    <canvas id="bgcvs"></canvas>
-    <div id="cur"></div>
-    <div id="cur-o"></div>
 
-    <!-- NAV -->
-    <nav>
-        <div class="nav-logo">
-            <img src="photo1.jpg" alt="画像1">
-            <span class="nav-brand">Last Resort</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#project">Project</a></li>
-            <li><a href="#substories">Stories</a></li>
-            <li><a href="#mainstory">Main</a></li>
-            <li><a href="#philosophy">Philosophy</a></li>
-            <li><a href="#author">Author</a></li>
-        </ul>
+    <nav class="top-nav">
+        <img src="ラストリゾート.png" alt="Last Resort Logo" class="site-logo">
     </nav>
 
-    <!-- HERO -->
-    <section id="hero">
-        <div class="hero-bg"
-            style="background-image:url('photo18.jpg'); height: 100vh; width: 100%; background-size: cover; background-position: center;">
+    <header class="hero">
+        <div class="reveal">
+            <h1>LAST RESORT</h1>
+            <p>AGI/ASI時代の到来。<br>アルゴリズムが全ての「正解」を導き出す世界で、<br>人間が人間であるための証明とは何か。</p>
         </div>
-        </div>
-        <div class="hero-vignette"></div>
-        <div class="hero-top-rule"></div>
-        <div class="hero-bot-rule"></div>
-        <div class="hero-center">
-            <img class="hero-logo" src="photo2.jpg" alt="画像2">
-            <span class="hero-pre">A Multidimensional Novel &nbsp;·&nbsp; 多次元小説 &nbsp;·&nbsp; 馬上精彦</span>
-            <div class="hero-tc"><span class="hero-en">Last<br>Resort</span></div>
-            <div class="hero-tc2"><span class="hero-jp">ラストリゾート</span></div>
-            <p class="hero-tagline">時間・空間・意識の境界が溶ける場所<br>それは最後の楽園か…</p>
-            <div class="hero-cta-row">
-                <a href="#substories" class="hero-btn"><span>サブストーリーを読む — 今すぐ公開中</span></a>
-                <a href="#project" class="hero-sub-link">プロジェクトについて ↓</a>
-            </div>
-        </div>
-        <div class="hero-scroll">
-            <div class="hero-scroll-bar"></div><span>Scroll</span>
-        </div>
-    </section>
+    </header>
 
-    <!-- SCENE STRIP 1 -->
-    <div class="scene-strip">
-        <img src="photo3.jpg" alt="画像3">
-        <div class="strip-ov"></div>
-        <div class="strip-cap rv">
-            <span class="cap-lbl">The Archive of Dimensions</span>
-            <p class="cap-txt">古と未来が交差する場所に、物語は眠っている</p>
-        </div>
-    </div>
+    <main class="container">
 
-    <!-- PROJECT -->
-    <section id="project" class="sec">
+        <section id="presentation">
+            <h2 class="section-title reveal">物語の始まり</h2>
+            <p class="section-desc reveal">効率性と予測可能性の果てに待つプロローグをご覧ください。</p>
+            <div class="video-container reveal">
+                <iframe src="https://drive.google.com/file/d/19kh1P7yUYNhHcVI6XxpTQB3of8rhoa2v/preview"
+                    allow="autoplay"></iframe>
+            </div>
+        </section>
 
-        <div class="vertical-phrase rv">
-            <span>現実は常に仮設である</span>
-        </div>
+        <section id="philosophy">
+            <h2 class="section-title reveal">3つのパラダイムシフト</h2>
+            <p class="section-desc reveal">人間性の特異点を保護し、次世代へ継承するためのコア・フィロソフィー。</p>
+            <div class="graphic-wrapper reveal"><img src="unnamed (9).jpg" alt="Paradigm Shift"></div>
+        </section>
 
-        <div class="proj-grid">
-            <div class="proj-aside rv-l">
-                <div class="proj-num">01</div>
-                <span class="eyebrow">The Multidimensional Strategy</span>
-                <div class="proj-jp">多次元の仕掛け</div>
-            </div>
-            <div class="rv">
-                <h2 class="sec-h2">新たな哲学の形<br>
-                    <p class="sec-p">
-                        「ラストリゾート」は、従来の小説とはまったく異なる構造を持つ。稀代の空間プロデューサー馬上精彦が世に放つ精神を揺さぶる多次元小説
-                    </p>
-                    <div class="pull">
-                        <p>読む者の脳内で、三つの物語が遡及的に癒合し、一気に多次元の空間が展開する</p>
-                    </div>
-                    <p class="sec-p">
-                        現在公開されている二本のサブストーリーは、単体でも深く、それぞれがユニークな世界観と哲学を持つ独立した作品だ。しかしそれは同時に、間もなく公開されるメインストーリーへの「伏線」であり「引用的構造」でもある。メインを読んだとき、サブの意味が根底から変容する。
-                    </p>
-                    <div class="stl rv">
-                        <div class="stl-item">
-                            <div class="stl-step">I</div>
-                            <div>
-                                <div class="stl-title">サブストーリー — 現在公開中</div>
-                                <p class="stl-text">
-                                    二本のサブストーリーがnoteとyoutubeにて公開中。単独で読んでも<em>深く、強く</em>、独自の宇宙観を持つ完結した作品。読者はここから「ラストリゾート」の世界に入り込む…
-                                </p>
-                            </div>
-                        </div>
-                        <div class="stl-item">
-                            <div class="stl-step">II</div>
-                            <div>
-                                <div class="stl-title">メインストーリー — 間もなく公開</div>
-                                <p class="stl-text">
-                                    背骨となるメインストーリーが公開される。これを読んだ瞬間、サブストーリーの<em>意味が遡及的に書き換わる</em>。物語の多次元性が脳内で一気に再構築される。</p>
-                            </div>
-                        </div>
-                        <div class="stl-item">
-                            <div class="stl-step">III</div>
-                            <div>
-                                <div class="stl-title">多次元の完成 — 読者の脳内で</div>
-                                <p class="stl-text">
-                                    三つの物語が交差し、単一の次元では捉えきれない世界を垣間見る<em>馬上精彦の哲学・世界観・人生訓の集大成</em>として、読む者の意識を組み替える。</p>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </section>
+        <section id="mechanism">
+            <h2 class="section-title reveal">脳内を書き換える「多次元的装置」</h2>
+            <p class="section-desc reveal">科学、精神、存在を問う二つの物語が交差する瞬間、あなたの脳内で宇宙が再構築される。</p>
+            <div class="graphic-wrapper reveal"><img src="unnamed (49).jpg" alt="Mechanism"></div>
+        </section>
 
-    <!-- FILM REEL -->
-    <div id="filmreel">
-        <span class="reel-lbl">Scenes from the Novel Universe</span>
-        <div class="reel-track" id="reelTrack">
-            <div class="reel-frame"><img src="photo4.jpg" alt="画像4"><span class="reel-cap">The Convergence</span></div>
-            <div class="reel-frame"><img src="photo5.jpg" alt="画像5"><span class="reel-cap">The Forest Protocol</span>
-            </div>
-            <div class="reel-frame"><img src="photo6.jpg" alt="画像6"><span class="reel-cap">The Crystal Object</span>
-            </div>
-            <div class="reel-frame"><img src="photo7.jpg" alt="画像7"><span class="reel-cap">The Tuning</span></div>
-            <div class="reel-frame"><img src="photo8.jpg" alt="画像8"><span class="reel-cap">The Dragon Bar</span></div>
-            <div class="reel-frame"><img src="photo9.jpg" alt="画像9"><span class="reel-cap">The Witness</span></div>
-            <div class="reel-frame"><img src="photo10.jpg" alt="画像10"><span class="reel-cap">The Commission</span></div>
-            <div class="reel-frame"><img src="photo11.jpg" alt="画像11"><span class="reel-cap">The Ultimate Return</span>
-            </div>
-            <div class="reel-frame"><img src="photo12.jpg" alt="画像12"><span class="reel-cap">The Sound Ceremony</span>
-            </div>
-            <div class="reel-frame"><img src="photo4.jpg" alt="画像4"><span class="reel-cap">The Convergence</span></div>
-            <div class="reel-frame"><img src="photo5.jpg" alt="画像5"><span class="reel-cap">The Forest Protocol</span>
-            </div>
-            <div class="reel-frame"><img src="photo6.jpg" alt="画像6"><span class="reel-cap">The Crystal Object</span>
-            </div>
-            <div class="reel-frame"><img src="photo7.jpg" alt="画像7"><span class="reel-cap">The Tuning</span></div>
-            <div class="reel-frame"><img src="photo8.jpg" alt="画像8"><span class="reel-cap">The Dragon Bar</span></div>
-            <div class="reel-frame"><img src="photo9.jpg" alt="画像9"><span class="reel-cap">The Witness</span></div>
-            <div class="reel-frame"><img src="photo10.jpg" alt="画像10"><span class="reel-cap">The Commission</span></div>
-            <div class="reel-frame"><img src="photo11.jpg" alt="画像11"><span class="reel-cap">The Ultimate Return</span>
-            </div>
-            <div class="reel-frame"><img src="photo12.jpg" alt="画像12"><span class="reel-cap">The Sound Ceremony</span>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <!-- ★ ANIM 1: 墨流し詩 -->
-    <section id="inkpoem">
-        <div class="ink-bg" style="background-image:url('photo19.jpg')"> </div>
-        <svg class="enso-svg" viewBox="0 0 400 400" fill="none">
-            <circle class="enso-c" id="ensoC" cx="200" cy="200" r="180" stroke-linecap="round"
-                transform="rotate(-90 200 200)" />
-        </svg>
-        <div class="poem-wrap">
-            <div class="poem-lines">
-                <div class="poem-l">サブストーリーは問う——</div>
-                <div class="poem-l">「あなたは何者か」</div>
-                <div class="poem-l gld">メインストーリーは告げる——</div>
-                <div class="poem-l gld">「世界とは何か」</div>
-                <div class="poem-l" style="margin-top:1.2rem;font-size:clamp(.9rem,1.7vw,1.35rem)">二つの問いが交差する瞬間、</div>
-                <div class="poem-l" style="font-size:clamp(.9rem,1.7vw,1.35rem)">あなたの脳内で<span
-                        style="color:var(--gold2)">宇宙</span>が生まれる。</div>
-                <div class="poem-l en">The sub asks who you are. The main declares what the world is.<br>Where they
-                    cross — a
-                    universe is born inside you.</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SUB STORIES -->
-    <section id="substories" class="sec sec-dark">
-        <div class="sub-intro rv">
-            <span class="eyebrow">Sub Stories — Now Publishing</span>
-            <div class="live-badge">
-                <div class="wave-icon">
-                    <span></span><span></span><span></span><span></span>
+        <section id="journey">
+            <h2 class="section-title reveal">カイロスの旅：5つの次元</h2>
+            <div class="journey-grid">
+                <div class="journey-card reveal">
+                    <h3>第1：幽玄の刻印</h3>
+                    <p>数千年の歴史の「縦軸」に触れ、テクノロジーに抗う錨を下ろす。</p>
                 </div>
-                現在公開中 · Live on Note
-            </div>
-            <h2 class="sec-h2" style="margin-bottom:1.4rem">二本のサブストーリー<br><em>今すぐ見る！</em></h2>
-            <p>単体でも完結した深みを持つ二つの物語。しかしそれは、メインストーリーが登場したとき、新たな意味の層を帯びる「引用的構造」でもある。まずこの二本から、ラストリゾートの世界へ</p>
-        </div>
-        <div class="sub-dual">
-            <div class="sub-card">
-                <div class="sub-bg" style="background-image:url('photo20.jpg')"> </div>
-                <div class="sub-gl"></div>
-                <div class="sub-cnt">
-                    <div class="sub-badge"><span class="sub-bdot"></span>Sub Story 1 — 副軸・第一章</div>
-                    <span class="sub-num">I</span>
-                    <div class="sub-title">聖なる波動<br>Holy Vibes</div>
-                    <div class="sub-en">The Tuning Fork & The Archive of Memory</div>
-                    <p class="sub-body"></p>
-                    <div class="sub-tags">
-                        <span class="sub-tag">量子音響技術</span><span class="sub-tag">意識の変容</span>
-                        <span class="sub-tag">技術の特異点</span><span class="sub-tag">総合的知性</span>
-                    </div>
-                    <a href="https://youtu.be/zGmsdWIlzHQ" target="_blank" rel="noopener"
-                        class="sub-cta"><span>サブストーリー1/聖なる波動
-                            Holy Vibes. &nbsp;→</span></a>
+                <div class="journey-card reveal">
+                    <h3>第2：原始の境界</h3>
+                    <p>電波も時計もない禁足地で、自然の不条理に身を置く。</p>
+                </div>
+                <div class="journey-card reveal">
+                    <h3>第3：刹那の供物</h3>
+                    <p>命と職人技の結晶を体内に取り込む儀式。</p>
+                </div>
+                <div class="journey-card reveal">
+                    <h3>第4：叡智の特異点</h3>
+                    <p>AIには模倣できない不純物こそが、人間の証であると悟る。</p>
+                </div>
+                <div class="journey-card reveal">
+                    <h3>第5：不変の循環</h3>
+                    <p>細胞からノイズを除去し、生命の純度を高める。</p>
                 </div>
             </div>
-            <div class="sub-card">
-                <div class="sub-bg" style="background-image:url('photo21.jpg')"> </div>
-                <div class="sub-gr"></div>
-                <div class="sub-cnt">
-                    <div class="sub-badge"><span class="sub-bdot"></span>Sub Story 2 — 副軸・第二章</div>
-                    <span class="sub-num">II</span>
-                    <div class="sub-title">崑崙茶の使者<br>Messenger of Kunlun Tea</div>
-                    <div class="sub-en">The Sound Ceremony & Those Who Awaken</div>
-                    <p class="sub-body"></p>
-                    <div class="sub-tags">
-                        <span class="sub-tag">富の還流</span><span class="sub-tag">人生の意味</span>
-                        <span class="sub-tag">放棄する喜び</span><span class="sub-tag">至福の聖茶</span>
-                    </div>
-                    <a href="https://youtu.be/E3llFxpNcA8" target="_blank" rel="noopener"
-                        class="sub-cta"><span>サブストーリー２/崑崙茶の使者
-                            &nbsp;→</span></a>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ★ ANIM 2: 水鏡 -->
-    <div id="waterdivide">
-        <img class="wd-img" src="photo13.jpg" alt="画像13">
-        <div class="wd-ov"></div>
-        <canvas id="rippleCvs"></canvas>
-        <div class="wd-ctr">
-            <p class="wd-txt">三つの物語が脳内で出会い——</p>
-            <p class="wd-txt" style="transition-delay:.28s">本当の旅が始まる…</p>
-            <span class="wd-sub">When the main story arrives, the mirror breaks.</span>
-        </div>
-    </div>
+        <section id="gallery">
+            <h2 class="section-title reveal">体験の断片</h2>
+            <div class="slider-container reveal">
+                <div class="slider" id="slider">
+                    <img src="9.jpg" class="slide active">
+                    <img src="10.jpg" class="slide"><img src="11.jpg" class="slide">
+                    <img src="12.jpg" class="slide"><img src="13.jpg" class="slide">
+                    <img src="14.jpg" class="slide"><img src="15.jpg" class="slide">
+                    <img src="16.jpg" class="slide"><img src="17.jpg" class="slide">
+                    <img src="18.jpg" class="slide"><img src="19.jpg" class="slide">
+                    <img src="20.jpg" class="slide"><img src="21.jpg" class="slide">
+                    <img src="22.jpg" class="slide"><img src="23.jpg" class="slide">
+                </div>
+                <button class="nav-btn prev-btn" id="prevBtn">&#10094;</button>
+                <button class="nav-btn next-btn" id="nextBtn">&#10095;</button>
+                <div class="slider-indicators" id="indicators"></div>
+            </div>
+        </section>
 
-    <!-- MAIN STORY COMING SOON -->
-    <section id="mainstory" class="sec-navy" style="padding:0">
-        <div class="ms-grid">
-            <div class="ms-vis">
-                <img src="photo14.jpg" alt="画像14">
-                <div class="ms-vis-ov"></div>
+        <section id="epilogue" class="epilogue">
+            <h2 class="section-title reveal">The Door is Already Open.</h2>
+            <div class="link-container reveal">
+                <a href="https://last-resort-web-beige.vercel.app/" target="_blank" class="action-link">Last Resort
+                    公式</a>
+                <a href="https://note.com/kiyohiko_umagami" target="_blank" class="action-link">馬神清彦 note</a>
             </div>
-            <div class="ms-cnt rv-r">
-                <div class="ms-badge"><span class="ms-bdot"></span>Main Story — Coming Soon</div>
-                <div class="ms-num">∞</div>
-                <div class="ms-title">全てを繋ぐ<br>メインストーリー</div>
-                <span class="ms-en">The Main Continuum — The Spine of Everything</span>
-                <p class="ms-p">サブストーリーが「科学」と「精神」を問うとするなら、メインストーリーは「存在」と「普遍性」を問う。</p>
-                <p class="ms-p">
-                    馬上精彦が半世紀をかけて蓄積してきた空間思想・哲学・人生訓のすべてが、このメインストーリーに注入される。それが公開された瞬間、先に読んでいたサブストーリーの意味は遡及的に書き換わり、三本の物語が一気に多次元的に結合する。
-                </p>
-                <div class="ms-teaser">
-                    <p>「サブストーリーを読んだあなたは、既にラストリゾートに片足を踏み入れている</p>
-                </div>
-                <div class="ms-lock">⊘ &nbsp;間もなく公開 &nbsp;·&nbsp; メインストーリーは近い</div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- PHILOSOPHY -->
-    <section id="philosophy" class="sec">
-        <div class="ph-hdr rv">
-            <span class="eyebrow">World View · Philosophy · Life Wisdom</span>
-            <h2 class="sec-h2" style="margin-bottom:0">世界観・哲学・人生訓——<em>三位一体の集大成</em></h2>
-        </div>
-        <div class="ph-grid">
-            <div class="ph-card rv">
-                <span class="ph-n">一</span>
-                <div class="ph-jp">世界観</div><span class="ph-en">World View</span>
-                <p class="ph-txt">
-                    1960年代からパリ・ロンドン・東京の三大都市を横断し、パリ５月革命、スウィンギンロンドンからヒッピートレイルまでを現場体験した眼は、世界を「文化の多次元空間」として捉える。
-                </p>
-                <p class="ph-q">「世界とは、人間が時間と交信するための装置である。物語りは、意識が次元を越えて交信するためのソフトウェアとなる」</p>
-            </div>
-            <div class="ph-card rv" style="transition-delay:.15s">
-                <span class="ph-n">二</span>
-                <div class="ph-jp">哲学</div><span class="ph-en">Philosophy</span>
-                <p class="ph-txt">民俗学・文化人類学を基盤に、和洋漢の哲学思想にニューエイジ思想が加味された独自の総合的思想体系。「存在は多層的であり、現実は仮設現場のようなもの」が全編を貫く。
-                </p>
-                <p class="ph-q">「哲学は書斎の中で生まれない、音楽が流れ、酒が交わされ、見知らぬ人が出会う場所。あの市井の中でこそ生まれる」
-                </p>
-            </div>
-            <div class="ph-card rv" style="transition-delay:.3s">
-                <span class="ph-n">三</span>
-                <div class="ph-jp">人生訓</div><span class="ph-en">Life Wisdom</span>
-                <p class="ph-txt">半世紀以上の実践の中で書かれた教訓は紙上の格言ではない。登場人物を介して著者自らの体験が、読み手に直接渡される「生きることの要諦」。</p>
-                <p class="ph-q">「最後の手段（Last Resort）とは、絶望の果てではなく、あらゆる可能性を使い切った者だけが手にする、初めての希望である」</p>
-            </div>
-        </div>
-    </section>
+    </main>
 
-    <!-- ★ ANIM 3: 星砂 -->
-    <section id="starcounter">
-        <canvas id="pCvs"></canvas>
-        <div class="sc-grid">
-            <div class="sc-item" data-target="50" data-suffix="年以上"><span class="sc-n" id="scn0">0</span><span
-                    class="sc-lbl">Years of Practice</span>
-                <p class="sc-desc">空間デザインと思想実践の歳月</p>
-            </div>
-            <div class="sc-item" data-target="2" data-suffix="本公開中"><span class="sc-n" id="scn1">0</span><span
-                    class="sc-lbl">Sub Stories · Live Now</span>
-                <p class="sc-desc">今すぐnoteで読める副軸の物語</p>
-            </div>
-            <div class="sc-item" data-target="1" data-suffix="本 Coming Soon"><span class="sc-n" id="scn2">0</span><span
-                    class="sc-lbl">Main Story · Forthcoming</span>
-                <p class="sc-desc">間もなく世界を塗り替えるメイン</p>
-            </div>
-            <div class="sc-item" data-target="∞" data-suffix=""><span class="sc-n" id="scn3">∞</span><span
-                    class="sc-lbl">Dimensions</span>
-                <p class="sc-desc">交差する物語が生む多次元の宇宙</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SCENE STRIP 2 -->
-    <div class="scene-strip" style="height:52vh">
-        <img src="photo15.jpg" alt="画像15">
-        <div class="strip-ov"></div>
-        <div class="strip-cap rv">
-            <span class="cap-lbl">The Encounter</span>
-            <p class="cap-txt">二人の出会いが扉を開いた</p>
-        </div>
-    </div>
-
-    <!-- AUTHOR -->
-    <section id="author" class="sec sec-dark">
-        <div class="au-grid">
-            <div class="rv-l">
-                <span class="eyebrow">About the Author</span>
-                <h2 class="au-name">馬上精彦</h2>
-                <span class="au-en">Kiyohiko Umagami</span>
-                <div class="au-roles">
-                    <span class="au-role">空間プロデューサー</span><span class="au-role">オルタナティブ建築家</span>
-                    <span class="au-role">文筆家</span><span class="au-role">哲学思想家</span>
-                </div>
-                <p class="au-p">
-                    1969年大学卒業後、パリ、ロンドンへ6年間留学。パリ５月革命、スウィンギングロンドン、ヒッピートレイルなどを現場体験。帰国後「センチメンタル・シティ・スタジオ」を設立し、多くの店舗を作り日本初の「空間プロデューサー」と呼ばれた。
-                </p>
-                <p class="au-p">
-                    1970〜90年代のカフェバーブーム、エスニックブームなどカルチャーの仕掛け人として「インテリアデザイン界のYMO」と評された。その後伊豆大島に移住しオルタナティブ建築で住宅を自作し、オーガニックな生活を始める。そして藁で作るエコハウス「ストローベイルハウス」を普及させるNPO活動を行う。2912年2棟目の
-                    自作建築Holy Hillを那須高原に作り、HGIS（人間の総合的知性研究会）を主宰し現在に至る。
-                </p>
-                <div class="au-stmt">
-                    <p>「ラストリゾートは私の集大成であり、同時に始まりでもある。空間が人を変えるように、物語もまた人の内側の次元を組み替える力を持つと、私は信じている」</p>
-                </div>
-            </div>
-            <div class="au-tl rv-r">
-                <div class="au-tl-i"><span class="au-yr">1960s</span>
-                    <p class="au-tl-txt">成城大学文化史学科。民俗学・文化人類学を専攻。ロックと古美術鑑賞に没頭する学生時代
-                    </p>
-                </div>
-                <div class="au-tl-i"><span class="au-yr">1969〜</span>
-                    <p class="au-tl-txt">
-                        パリへ旅立つ。文学、ファッション、建築などマルチ・エデュケーションを受ける。ロンドンではグラムロックから初期パンクまでを現場体験し、先端カルチャーの担い手たちとの交流。</p>
-                </div>
-                <div class="au-tl-i"><span class="au-yr">1970s</span>
-                    <p class="au-tl-txt">
-                        センチメンタル・シティ・スタジオを設立。六本木東風、原宿シネマクラブ、シルバースプーン、クーリーズクリーク、大阪パームスなど数多くの店舗を作り「空間プロデューサー」という概念を日本に根付かせる。
-                    </p>
-                </div>
-                <div class="au-tl-i"><span class="au-yr">1980s</span>
-                    <p class="au-tl-txt">カフェバー、ロックンロールリバイバル、ディスコ、エスニックなどのブームメーカーとして活躍する。</p>
-                </div>
-                <div class="au-tl-i"><span class="au-yr">現在</span>
-                    <p class="au-tl-txt">伊豆大島、那須高原に移住し、エコロジー活動を行う。現在、HGIS（人間
-                        の総合的知性研究会）を主宰する。
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PORTAL -->
-    <section id="portal">
-        <img class="portal-bg" src="photo16.jpg" alt="画像16">
-        <div class="portal-ov"></div>
-        <div class="portal-cnt rv">
-            <img class="portal-logo" src="photo17.jpg" alt="画像17">
-            <span class="eyebrow">Enter the Dimension — 次元への入口</span>
-            <h2 class="portal-h2"><span>ラストリゾートの</span><br>扉は、すでに…</h2>
-            <p class="portal-p">二本のサブストーリーが今すぐnoteで読める。メインストーリーは間もなく公開。この順序で読むことが、多次元体験の鍵だ。</p>
-            <a href="https://note.com/kiyohiko_umagami" target="_blank" rel="noopener" class="portal-btn"><span>noteで読む
-                    &nbsp;→</span></a>
-            <span class="portal-url">note.com/kiyohiko_umagami</span>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="ft">
-            <div>
-                <div class="ft-title">Last Resort</div>
-                <div class="ft-by">ラストリゾート — 多次元小説 &nbsp;·&nbsp; 馬上精彦 / Kiyohiko Umagami</div>
-            </div>
-            <div class="ft-r">
-                <a href="https://note.com/kiyohiko_umagami" target="_blank">note.com/kiyohiko_umagami ↗</a>
-                <a href="https://youtu.be/zGmsdWIlzHQ" target="_blank">サブストーリー1/聖なる波動 Holy Vibes. ↗</a>
-                <a href="https://youtu.be/IrKE1I-q37o" target="_blank">サブストーリー２/崑崙茶の使者 ↗</a>
-                <a href="#hero">Back to top ↑</a>
-            </div>
-        </div>
-        <div class="ft-copy">
-            <span>© Kiyohiko Umagami. All Rights Reserved.</span>
-            <span>空間プロデューサー · 文筆家 · 哲学思想家</span>
-        </div>
+    <footer class="footer">
+        <p>&copy; Project Last Resort / HGIS. All rights reserved.</p>
     </footer>
 
     <script>
-        /* cursor */
-        const cur = document.getElementById('cur'), curO = document.getElementById('cur-o');
-        let mx = 0, my = 0, ox = 0, oy = 0;
-        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px' });
-        (function ao() { ox += (mx - ox) * .1; oy += (my - oy) * .1; curO.style.left = ox + 'px'; curO.style.top = oy + 'px'; requestAnimationFrame(ao) })();
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveal = () => {
+                const reveals = document.querySelectorAll(".reveal");
+                reveals.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100) el.classList.add("active");
+                });
+            };
+            window.addEventListener("scroll", reveal);
+            reveal();
 
-        /* bg canvas */
-        const bc = document.getElementById('bgcvs'); const bx = bc.getContext('2d');
-        function rsb() { bc.width = innerWidth; bc.height = innerHeight } rsb(); addEventListener('resize', rsb);
-        const pts = []; for (let i = 0; i < 95; i++)pts.push({ x: Math.random(), y: Math.random(), s: Math.random() * .7 + .2, o: Math.random() * .18 + .04, vy: -(Math.random() * .00022 + .00007), vx: (Math.random() - .5) * .00005, ph: Math.random() * Math.PI * 2 });
-        let T = 0;
-        (function ab() {
-            bx.clearRect(0, 0, bc.width, bc.height); T += .004;
-            for (let i = 0; i < 16; i++) { const y = i / 16 * bc.height; bx.beginPath(); bx.moveTo(0, y); bx.lineTo(bc.width, y); bx.strokeStyle = 'rgba(184,147,90,0.02)'; bx.lineWidth = .5; bx.stroke() }
-            pts.forEach(p => { const f = .5 + .5 * Math.sin(T + p.ph); bx.beginPath(); bx.arc(p.x * bc.width, p.y * bc.height, p.s, 0, Math.PI * 2); bx.fillStyle = `rgba(184,147,90,${p.o * f})`; bx.fill(); p.y += p.vy; p.x += p.vx; if (p.y < 0) { p.y = 1; p.x = Math.random() } if (p.x < 0 || p.x > 1) p.x = Math.random() });
-            requestAnimationFrame(ab)
-        })();
+            const slides = document.querySelectorAll('.slide');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const indicatorsContainer = document.getElementById('indicators');
+            let current = 0;
 
-        /* scroll reveal */
-        const rvs = document.querySelectorAll('.rv,.rv-l,.rv-r');
-        const ro = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('on'), 55); ro.unobserve(e.target) } }) }, { threshold: .1 });
-        rvs.forEach(el => ro.observe(el));
+            if (slides.length > 0) {
+                slides.forEach((_, i) => {
+                    const dot = document.createElement('div');
+                    dot.className = `indicator ${i === 0 ? 'active' : ''}`;
+                    dot.onclick = () => { current = i; update(); };
+                    indicatorsContainer.appendChild(dot);
+                });
 
-        /* reel drag */
-        const rt = document.getElementById('reelTrack'); let rd = false, rs = 0, rl = 0;
-        rt.addEventListener('mousedown', e => { rd = true; rs = e.pageX - rt.offsetLeft; rl = rt.scrollLeft });
-        rt.addEventListener('mouseleave', () => rd = false); rt.addEventListener('mouseup', () => rd = false);
-        rt.addEventListener('mousemove', e => { if (!rd) return; e.preventDefault(); rt.scrollLeft = rl - (e.pageX - rt.offsetLeft - rs) });
+                const update = () => {
+                    slides.forEach(s => s.classList.remove('active'));
+                    document.querySelectorAll('.indicator').forEach(d => d.classList.remove('active'));
+                    slides[current].classList.add('active');
+                    document.querySelectorAll('.indicator')[current].classList.add('active');
+                };
 
-        /* hero parallax */
-        addEventListener('scroll', () => { const y = scrollY, h = document.getElementById('hero').offsetHeight; if (y < h) document.getElementById('hero').style.opacity = 1 - y / h * .72 }, { passive: true });
-
-        /* ★ ANIM 1: 墨流し */
-        const ensoEl = document.getElementById('ensoC');
-        const pls = document.querySelectorAll('.poem-l');
-        new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { ensoEl.classList.add('drawn'); pls.forEach((l, i) => setTimeout(() => l.classList.add('show'), i * 460)) } }) }, { threshold: .32 }).observe(document.getElementById('inkpoem'));
-
-        /* ★ ANIM 2: 水鏡 ripple */
-        const rc = document.getElementById('rippleCvs'); const rx = rc.getContext('2d');
-        function rsrc() { const s = document.getElementById('waterdivide'); rc.width = s.offsetWidth; rc.height = s.offsetHeight }
-        rsrc(); addEventListener('resize', rsrc);
-        const rips = []; let ripTimer;
-        function addRip(x, y) { rips.push({ x, y, r: 0, max: Math.min(rc.width, rc.height) * .55, o: 1, sp: 1.1 + Math.random() * .7 }) }
-        new IntersectionObserver(es => {
-            es.forEach(e => {
-                if (e.isIntersecting) {
-                    document.querySelectorAll('.wd-txt,.wd-sub').forEach(el => el.classList.add('show'));
-                    clearInterval(ripTimer);
-                    ripTimer = setInterval(() => addRip(rc.width * .5 + (Math.random() - .5) * rc.width * .3, rc.height * .5 + (Math.random() - .5) * rc.height * .3), 1100);
-                }
-            })
-        }, { threshold: .3 }).observe(document.getElementById('waterdivide'));
-        (function ar() {
-            rx.clearRect(0, 0, rc.width, rc.height);
-            rips.forEach(r => { rx.beginPath(); rx.arc(r.x, r.y, r.r, 0, Math.PI * 2); rx.strokeStyle = `rgba(184,147,90,${r.o * .3})`; rx.lineWidth = .7; rx.stroke(); r.r += r.sp; r.o = 1 - r.r / r.max });
-            for (let i = rips.length - 1; i >= 0; i--)if (rips[i].o <= 0) rips.splice(i, 1);
-            requestAnimationFrame(ar)
-        })();
-
-        /* ★ ANIM 3: 星砂 */
-        const pc = document.getElementById('pCvs'); const px = pc.getContext('2d');
-        function rsp() { const s = document.getElementById('starcounter'); pc.width = s.offsetWidth; pc.height = s.offsetHeight }
-        rsp(); addEventListener('resize', rsp);
-        const bts = [];
-        function doBurst(x, y) { for (let i = 0; i < 32; i++) { const a = Math.PI * 2 / 32 * i + Math.random() * .3, sp = Math.random() * 2 + .4; bts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1, life: 1, dc: Math.random() * .024 + .014, r: Math.random() * 1.7 + .4 }) } }
-        (function ap() { px.clearRect(0, 0, pc.width, pc.height); for (let i = bts.length - 1; i >= 0; i--) { const b = bts[i]; b.x += b.vx; b.y += b.vy; b.vy += .05; b.life -= b.dc; if (b.life <= 0) { bts.splice(i, 1); continue } px.beginPath(); px.arc(b.x, b.y, b.r, 0, Math.PI * 2); px.fillStyle = `rgba(184,147,90,${b.life})`; px.fill() } requestAnimationFrame(ap) })();
-        function cntUp(el, t, sfx, dur, cb) {
-            if (isNaN(t)) { cb && cb(); return }
-            const s = performance.now();
-            (function st(n) { const p = Math.min((n - s) / dur, 1), e = 1 - Math.pow(1 - p, 4); el.textContent = Math.round(e * t) + sfx; if (p < 1) requestAnimationFrame(st); else { el.textContent = t + sfx; cb && cb() } })(performance.now())
-        }
-        new IntersectionObserver(es => {
-            es.forEach(e => {
-                if (e.isIntersecting) {
-                    document.querySelectorAll('.sc-item').forEach((it, i) => {
-                        setTimeout(() => {
-                            it.classList.add('counted');
-                            const ni = it.querySelector('.sc-n'), tg = it.dataset.target, sf = it.dataset.suffix || '', pt = parseInt(tg);
-                            const r = ni.getBoundingClientRect(), sr = pc.getBoundingClientRect();
-                            cntUp(ni, isNaN(pt) ? null : pt, sf, 1200 + i * 80, () => doBurst(r.left + r.width / 2 - sr.left, r.top + r.height / 2 - sr.top));
-                        }, i * 170);
-                    });
-                }
-            })
-        }, { threshold: .3 }).observe(document.getElementById('starcounter'));
-
+                nextBtn.onclick = () => { current = (current + 1) % slides.length; update(); };
+                prevBtn.onclick = () => { current = (current - 1 + slides.length) % slides.length; update(); };
+            }
+        });
     </script>
 </body>
 
