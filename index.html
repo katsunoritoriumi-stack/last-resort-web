@@ -340,6 +340,278 @@
             color: var(--text-muted);
             font-size: 0.8rem;
         }
+
+        /* =========================================
+            Play Button
+        ========================================= */
+        .audio-play-btn-container {
+            text-align: center;
+            margin: -40px auto 40px auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .audio-play-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(197, 160, 89, 0.05);
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold);
+            text-decoration: none;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
+        }
+
+        .audio-play-btn::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            opacity: 0;
+            animation: pulse-ring 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .audio-play-btn:hover {
+            background: var(--accent-gold);
+            color: #000;
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.6);
+            transform: scale(1.05);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 14px 0 14px 22px;
+            border-color: transparent transparent transparent currentColor;
+            margin-left: 6px;
+            transition: border-color 0.4s ease;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .audio-caption {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.15em;
+            font-family: var(--font-serif);
+        }
+
+        /* =========================================
+            Custom Audio Player Overlay
+        ========================================= */
+        #audio-overlay {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+            background: rgba(8, 8, 12, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(197, 160, 89, 0.25);
+            z-index: 1000;
+            padding: 20px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        #audio-overlay.active {
+            bottom: 0;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ctrl-btn {
+            background: rgba(197, 160, 89, 0.05);
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            color: var(--accent-gold);
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(197, 160, 89, 0.1);
+        }
+
+        .ctrl-btn:hover {
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+        }
+
+        /* Use simple borders for play icon */
+        .icon-play {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 16px;
+            border-color: transparent transparent transparent currentColor;
+            margin-left: 5px;
+            transition: border-color 0.3s;
+        }
+
+        /* Pause icon using pseudo elements */
+        .icon-pause {
+            width: 14px;
+            height: 18px;
+            position: relative;
+        }
+
+        .icon-pause::before,
+        .icon-pause::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: currentColor;
+            border-radius: 1px;
+            transition: background-color 0.3s;
+        }
+
+        .icon-pause::before {
+            left: 0;
+        }
+
+        .icon-pause::after {
+            right: 0;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .time-display {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: var(--font-sans);
+            min-width: 40px;
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-bar-wrap {
+            flex-grow: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: height 0.2s;
+        }
+
+        .progress-bar-wrap:hover {
+            height: 6px;
+        }
+
+        .progress-filled {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(197, 160, 89, 0.8);
+        }
+
+        .close-player {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .close-player:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 140px;
+        }
+
+        .player-title {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            color: var(--accent-gold);
+            line-height: 1.2;
+            letter-spacing: 0.05em;
+        }
+
+        .player-subtitle {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-top: 4px;
+        }
+
+        @media(max-width: 768px) {
+            #audio-overlay {
+                flex-wrap: wrap;
+                padding: 15px 5%;
+                gap: 12px;
+                padding-bottom: 25px;
+                /* Handle safe area bottom */
+            }
+
+            .progress-container {
+                width: 100%;
+                order: 3;
+            }
+
+            .player-info {
+                flex-grow: 1;
+            }
+        }
     </style>
 </head>
 
@@ -425,15 +697,51 @@
         </section>
 
         <section id="epilogue" class="epilogue">
+            <div class="audio-play-btn-container reveal">
+                <a href="#" id="open-player-btn" class="audio-play-btn" title="Play Audio">
+                    <span class="play-icon"></span>
+                </a>
+                <p class="audio-caption">Listen to the Voice</p>
+            </div>
             <h2 class="section-title reveal">The Door is Already Open.</h2>
             <div class="link-container reveal">
                 <a href="https://last-resort-web-beige.vercel.app/" target="_blank" class="action-link">Last Resort
                     公式</a>
-                <a href="https://note.com/kiyohiko_umagami" target="_blank" class="action-link">馬神清彦 note</a>
+                <a href="https://note.com/kiyohiko_umagami" target="_blank" class="action-link">note</a>
             </div>
         </section>
 
     </main>
+
+    <!-- Custom Audio Player Overlay -->
+    <div id="audio-overlay">
+        <!-- Direct Google Drive audio stream URL -->
+        <audio id="custom-audio" class="hidden" preload="metadata">
+            <!-- Google DriveのURLは直リンク再生が弾かれるためローカルのMP3に変更しました -->
+            <source src="LAST RESORT.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="player-info">
+            <div class="player-title">Last Resort</div>
+            <div class="player-subtitle">Epilogue Voice</div>
+        </div>
+
+        <div class="player-controls">
+            <button class="ctrl-btn" id="play-pause-btn" title="Play/Pause">
+                <div class="icon-play" id="play-pause-icon"></div>
+            </button>
+        </div>
+
+        <div class="progress-container">
+            <span class="time-display" id="current-time">0:00</span>
+            <div class="progress-bar-wrap" id="progress-wrap">
+                <div class="progress-filled" id="progress-filled"></div>
+            </div>
+            <span class="time-display" id="duration">0:00</span>
+        </div>
+
+        <button class="close-player" id="close-player-btn" title="Close Player">&times;</button>
+    </div>
 
     <footer class="footer">
         <p>&copy; Project Last Resort / HGIS. All rights reserved.</p>
@@ -475,6 +783,89 @@
                 nextBtn.onclick = () => { current = (current + 1) % slides.length; update(); };
                 prevBtn.onclick = () => { current = (current - 1 + slides.length) % slides.length; update(); };
             }
+
+            // Audio Player Control Logic
+            const audioObj = document.getElementById('custom-audio');
+            const openPlayerBtn = document.getElementById('open-player-btn');
+            const audioOverlay = document.getElementById('audio-overlay');
+            const closePlayerBtn = document.getElementById('close-player-btn');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const playPauseIcon = document.getElementById('play-pause-icon');
+            const progressWrap = document.getElementById('progress-wrap');
+            const progressFilled = document.getElementById('progress-filled');
+            const currentTimeEl = document.getElementById('current-time');
+            const durationEl = document.getElementById('duration');
+
+            let isPlaying = false;
+
+            function formatTime(seconds) {
+                if (isNaN(seconds) || !isFinite(seconds)) return "0:00";
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            function togglePlay() {
+                if (audioObj.paused) {
+                    audioObj.play().then(() => {
+                        playPauseIcon.className = 'icon-pause';
+                        isPlaying = true;
+                    }).catch(err => {
+                        console.error("Audio playback error:", err);
+                    });
+                } else {
+                    audioObj.pause();
+                    playPauseIcon.className = 'icon-play';
+                    isPlaying = false;
+                }
+            }
+
+            openPlayerBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                audioOverlay.classList.add('active');
+                if (!isPlaying && audioObj.paused) {
+                    togglePlay();
+                }
+            });
+
+            closePlayerBtn.addEventListener('click', () => {
+                audioOverlay.classList.remove('active');
+                if (isPlaying) {
+                    togglePlay();
+                }
+            });
+
+            playPauseBtn.addEventListener('click', togglePlay);
+
+            audioObj.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audioObj.duration);
+            });
+
+            audioObj.addEventListener('timeupdate', () => {
+                if (audioObj.duration) {
+                    const percent = (audioObj.currentTime / audioObj.duration) * 100;
+                    progressFilled.style.width = `${percent}%`;
+                    currentTimeEl.textContent = formatTime(audioObj.currentTime);
+                    if (durationEl.textContent === "0:00" || durationEl.textContent === "NaN:NaN") {
+                        durationEl.textContent = formatTime(audioObj.duration);
+                    }
+                }
+            });
+
+            progressWrap.addEventListener('click', (e) => {
+                if (audioObj.duration) {
+                    const rect = progressWrap.getBoundingClientRect();
+                    const pos = (e.clientX - rect.left) / rect.width;
+                    audioObj.currentTime = pos * audioObj.duration;
+                }
+            });
+
+            audioObj.addEventListener('ended', () => {
+                playPauseIcon.className = 'icon-play';
+                isPlaying = false;
+                progressFilled.style.width = '0%';
+                currentTimeEl.textContent = '0:00';
+            });
         });
     </script>
 </body>
